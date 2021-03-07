@@ -1,4 +1,4 @@
-describe('todos API', () => {
+describe('API', () => {
     it('returns JSON', () => {
       cy.request('https://www.getpostman.com/collections/5d9f72679607a60f23af')
         .its('headers')
@@ -7,14 +7,8 @@ describe('todos API', () => {
     })
   })
 
-  it('loads 2 items', () => {
+  it('load body items', () => {
     cy.request('https://www.getpostman.com/collections/5d9f72679607a60f23af')
-      .its('body')
+      .its('body').its('item').its(1).its('response').its(0).its('body')
   })
-
-// it('GET-list user',()=>{
-//     cy.request('GET','https://www.getpostman.com/collections/5d9f72679607a60f23af').then((response)=>{
-//         expect(response.status).equal(200)
-//         expect(response.body).to.not.be.null
-//     })
-// })
+//.its('data').its('products').its(0).its('productGroupId')
