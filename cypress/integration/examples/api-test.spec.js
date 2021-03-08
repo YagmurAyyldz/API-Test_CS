@@ -1,4 +1,4 @@
-describe('API', () => {
+describe('API Check', () => {
     it('check'), () => {
         cy.request('https://www.getpostman.com/collections/5d9f72679607a60f23af').should(
             (response) => {
@@ -12,8 +12,8 @@ describe('API', () => {
     )}
 })  
 
-describe('API2', () => {
-    it('returns JSON', () => {
+describe('API Json Check', () => {
+    it('Returns JSON', () => {
       cy.request('https://www.getpostman.com/collections/5d9f72679607a60f23af')
         .its('headers')
         .its('content-type')
@@ -21,15 +21,51 @@ describe('API2', () => {
     })
   })
 
-  describe('API3', () => {
-      it('detail', () => {
-          // first, let's find out the userId of the first user we have
+  describe('API Getting Item', () => {
+      it('Getting Item', () => {
         cy.request('https://www.getpostman.com/collections/5d9f72679607a60f23af')
-        .its('body') // yields the response object
-         // yields the first element of the returned list
-        // the above two commands its('body').its('0')
-        // can be written as its('body.0')
-        // if you do not care about TypeScript checks
+        .its('body').its('item')        
       })
-  })
-  
+
+      it('Getting "installment", "productGroupId", "installmentText" from Item 0', () => {
+        cy.request('https://www.getpostman.com/collections/5d9f72679607a60f23af')
+        .its('body')
+        .its('item')
+        .its('0')
+        .its('response')
+        .its('0')
+        .its('body')
+        .should('include','"installment": true')
+        .should('include', '"productGroupId": 1,')
+        .should('include', '"installmentText": Taksit Seçeneği,')
+      })
+        
+
+      it('Getting Item 1', () => {
+        cy.request('https://www.getpostman.com/collections/5d9f72679607a60f23af')
+        .its('body')
+        .its('item')
+        .its('1')
+        .its('response')
+        .its('0')
+        .its('body')       
+        .should('include', '"installment": false')
+        .should('include', '"installment": true')
+      })
+
+      it('Getting Item 2', () => {
+        cy.request('https://www.getpostman.com/collections/5d9f72679607a60f23af')
+        .its('body').its('item').its('2').its('response').its('0').its('body')
+      })
+
+      it('Getting Name', () => {
+        cy.request('GET', 'https://www.getpostman.com/collections/5d9f72679607a60f23af', {
+            name: 'Ciceksepeti API Test Project',
+        })
+    })
+
+       
+})
+
+//expect(request.body).to.include('email')
+
