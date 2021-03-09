@@ -21,7 +21,7 @@ describe('API Json Check', () => {
     })
   })
 
-  describe('API Getting Item', () => {
+  describe('API Getting Items', () => {
       it('Getting Item', () => {
         cy.request('https://www.getpostman.com/collections/5d9f72679607a60f23af')
         .its('body').its('item')        
@@ -37,20 +37,36 @@ describe('API Json Check', () => {
         .its('body')
         .should('include','"installment": true')
         .should('include', '"productGroupId": 1,')
-        .should('include', '"installmentText": Taksit Seçeneği,')
+        .should('include', '"installmentText":').should('not.be.empty')
       })
         
 
-      it('Getting Item 1', () => {
-        cy.request('https://www.getpostman.com/collections/5d9f72679607a60f23af')
+      it('Getting "installment", "productGroupId", "installmentText" from Item 1', () => {
+        if( cy.request('https://www.getpostman.com/collections/5d9f72679607a60f23af')
         .its('body')
         .its('item')
         .its('1')
         .its('response')
         .its('0')
         .its('body')       
-        .should('include', '"installment": false')
         .should('include', '"installment": true')
+        ){
+          cy.request('https://www.getpostman.com/collections/5d9f72679607a60f23af')
+        .its('body')
+        .its('item')
+        .its('1')
+        .its('response')
+        .its('0')
+        .its('body')       
+        .should('include', '"installment": true')
+        .should('include', '"installmentText":').should('not.be.empty')
+        }
+
+        cy.log('If installment:true then installmentText can not be empty')
+               
+        // .should('include', '"installment": false')
+        // .should('include', '"installmentText":').should('be.empty')
+
       })
 
       it('Getting Item 2', () => {
